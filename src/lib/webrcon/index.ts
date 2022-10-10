@@ -1,9 +1,12 @@
 import WebSocket from 'ws';
 import MessageHandler from './message-handler';
 import type {
+  EventHandler,
+  IDisposable,
   IRconMessage,
   RconCallbacks,
   RconCommandCallback,
+  WebRconEvents,
   WebsocketOptions,
 } from './types';
 
@@ -12,6 +15,7 @@ class WebRcon {
   private lastIdentifier = 0;
   private callbacks: RconCallbacks = {};
   public readonly messageHandler = new MessageHandler();
+  private readonly events: WebRconEvents = { connected: [[], []] };
 
   constructor(
     private readonly host: string,
@@ -82,9 +86,22 @@ class WebRcon {
     this.send(cmd, identifier);
   }
 
+  public commandAsync(cmd: string) {
+    return new Promise<IRconMessage>((resolve) => {
+      this.command(cmd, (message) => {
+        resolve(message);
+      });
+    });
+  }
+
   private onOpen() {
     this.ws?.on('message', this.onMessage.bind(this));
-    this.command('serverinfo', () => console.info('connected'));
+    this.command('serverinfo', this.onConnected.bind(this));
+  }
+
+  private onConnected() {
+    this.emit('connected');
+    console.info('webrcon connected');
   }
 
   private onError(err: Error) {
@@ -126,6 +143,33 @@ class WebRcon {
         }
       }
     }
+  }
+
+  on(event: string, handler: EventHandler): IDisposable | undefined {
+    if (this.events[event]?.[0].push(handler) === undefined) return undefined;
+    return {
+      dispose: () => {
+        this.off(event, handler);
+      },
+    };
+  }
+
+  once(event: string, handler: EventHandler) {
+    this.events[event]?.[1].push(handler);
+  }
+
+  off(event: string, handler: EventHandler) {
+    const index = this.events[event]?.[0].indexOf(handler);
+    if (index != null) {
+      this.events[event].splice(index, 1);
+    }
+  }
+
+  private emit(event: string) {
+    if (!this.events[event]) return;
+    this.events[event][0].forEach((handler) => handler(this));
+    this.events[event][1].forEach((handler) => handler(this));
+    this.events[event][1] = [];
   }
 }
 

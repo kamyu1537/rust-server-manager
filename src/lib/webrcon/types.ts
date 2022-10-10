@@ -39,3 +39,10 @@ export interface IChatMessage {
   Color: string;
   Time: number;
 }
+
+export type WebRconEvents = Record<string, [EventHandler[], EventHandler[]]>;
+export type EventHandler = (webrcon: WebRcon) => void | Promise<void>;
+
+export interface IDisposable {
+  dispose(): void;
+}

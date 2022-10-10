@@ -14,6 +14,7 @@ export interface IRconMessage {
 export type RconCommandCallback = (
   message: IRconMessage
 ) => void | Promise<void>;
+
 export type RconCallbacks = Record<number, RconCommandCallback>;
 
 export type WebsocketOptions = ClientOptions | ClientRequestArgs;
@@ -28,4 +29,13 @@ export interface IMessageHandler<T = unknown> {
     webrcon: WebRcon,
     message: IRconMessage
   ): void | Promise<void>;
+}
+
+export interface IChatMessage {
+  Channel: number;
+  Message: string;
+  UserId: string;
+  Username: string;
+  Color: string;
+  Time: number;
 }

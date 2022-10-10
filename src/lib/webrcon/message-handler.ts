@@ -21,7 +21,7 @@ class MessageHandler {
 
     this.handlers.forEach((handler) => {
       if (handler.type !== message.Type) return;
-      const data: Record<string, unknown> = {};
+      let data: Record<string, unknown> = {};
 
       if (handler.pattern) {
         if (typeof handler.pattern === 'string') {
@@ -40,7 +40,10 @@ class MessageHandler {
         handler.handle(data, webrcon, message);
         result = true;
       } else {
-        // 없을 경우 전체 이벤트를 받는다.
+        if (message.Type === 'Chat') {
+          data = JSON.parse(message.Message);
+        }
+
         handler.handle(data, webrcon, message);
         result = true;
       }

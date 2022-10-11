@@ -71,11 +71,13 @@ export const checkServerMonuments = async (webrcon: WebRcon) => {
 
       const cfg = fs.readFileSync('./server.cfg', 'utf8');
       if (cfg.includes('server.seed')) {
+        console.info(`server.seed "${seed}" -> server.seed "${newSeed}"`);
         const newCfg = cfg.replace(`server.seed "${seed}"`, `server.seed "${newSeed}"`);
         fs.writeFileSync('./server.cfg', newCfg);
         console.info('server.cfg updated');
       } else {
         fs.appendFileSync('./server.cfg', `server.seed "${newSeed}"`);
+        console.info('add server.seed to server.cfg');
       }
 
       console.info('server restart request');

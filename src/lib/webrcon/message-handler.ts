@@ -46,7 +46,7 @@ class MessageHandler {
 
         result = true;
       } else {
-        if (message.Type === 'Chat') {
+        if (message.Type === 'Chat' || message.Type === 'Report') {
           data = JSON.parse(message.Message);
         }
 

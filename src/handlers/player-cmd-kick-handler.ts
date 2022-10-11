@@ -25,7 +25,7 @@ class PlayerCmdKickHandler implements IMessageHandler<IChatMessage> {
     const displayName = result.slice(0, -1).join('');
     const reason = result[result.length - 1].slice(1, -1);
 
-    console.log('player kicked:', { displayName, reason });
+    console.log('cmd player kicked:', { displayName, reason });
 
     DiscordClient.getInstance()?.updatePlayerCount();
   }

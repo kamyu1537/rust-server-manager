@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { config } from './config';
 import { IServerInfo } from './server.types';
 import { getServerVariable, replaceInfoText } from './utils';
@@ -51,5 +52,34 @@ export const removeEntities = async (webrcon: WebRcon) => {
   if (save) {
     await webrcon.commandAsync('server.save');
     console.info('save command sent');
+  }
+};
+
+export const checkServerMonuments = async (webrcon: WebRcon) => {
+  if (config.necessaryMonuments.length === 0) return;
+
+  const resp = await webrcon.commandAsync('world.monuments');
+  const message = resp.Message;
+  const found = config.necessaryMonuments.findIndex((monument) => message.includes(monument));
+
+  if (found === -1) {
+    console.info('monuments not found');
+
+    if (fs.existsSync('./server.cfg')) {
+      const seed = await getServerVariable('server.seed', webrcon);
+      const newSeed = Math.floor(Math.random() * 2147484648) + 1;
+
+      const cfg = fs.readFileSync('./server.cfg', 'utf8');
+      if (cfg.includes('server.seed')) {
+        const newCfg = cfg.replace(`server.seed "${seed}"`, `server.seed "${newSeed}"`);
+        fs.writeFileSync('./server.cfg', newCfg);
+        console.info('server.cfg updated');
+      } else {
+        fs.appendFileSync('./server.cfg', `server.seed "${newSeed}"`);
+      }
+
+      console.info('server restart request');
+      await webrcon.commandAsync('restart 0');
+    }
   }
 };

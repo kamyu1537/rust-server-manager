@@ -22,6 +22,8 @@ interface IConfigData {
   playerCountChannelId: string;
   playerCountChannelNameFormat: string;
   gameEventChannelId: string;
+
+  necessaryMonuments: string[];
 }
 
 export let config: IConfigData = {
@@ -39,6 +41,11 @@ export let config: IConfigData = {
   playerCountChannelId: '',
   playerCountChannelNameFormat: 'Player: {count}',
   gameEventChannelId: '',
+
+  necessaryMonuments: [
+    'assets/bundled/prefabs/autospawn/monuments/medium/compound.prefab',
+    'assets/bundled/prefabs/autospawn/monument/medium/bandit_town.prefab',
+  ],
 };
 
 if (fs.existsSync('./config.json')) {

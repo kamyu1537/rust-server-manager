@@ -1,5 +1,5 @@
 import { RCON_HOST, RCON_PASS } from './lib/config';
-import { executeAutoCommands, removeEntities, setServerInfo } from './lib/server';
+import { checkServerMonuments, executeAutoCommands, removeEntities, setServerInfo } from './lib/server';
 import WebRcon from './lib/webrcon';
 
 import ChatHandler from './handlers/chat-handler';
@@ -21,6 +21,7 @@ const webrcon = new WebRcon(RCON_HOST, RCON_PASS);
 DiscordClient.getInstance(webrcon);
 
 // events
+webrcon.on('connected', checkServerMonuments);
 webrcon.on('connected', executeAutoCommands);
 webrcon.on('connected', setServerInfo);
 webrcon.on('connected', removeEntities);

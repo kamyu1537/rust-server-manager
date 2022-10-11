@@ -1,0 +1,10 @@
+version: '3'
+services:
+  app:
+    container_name: 'rust-manager'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - './log:/app/log'
+      - './config.json:/app/config.json'

@@ -7,7 +7,7 @@ class DiscordClient {
   private static discordClient: DiscordClient | undefined;
 
   static getInstance(webrcon?: WebRcon) {
-    if (DISCORD_BOT_TOKEN) return undefined;
+    if (!DISCORD_BOT_TOKEN) return undefined;
     if (this.discordClient == null && webrcon != null) {
       this.discordClient = new DiscordClient(webrcon);
     }

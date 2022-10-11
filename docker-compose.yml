@@ -5,6 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      SERVER_KEY: ''
+      DISCORD_BOT_TOKEN: ''
+      RCON_HOST: ''
+      RCON_PASS: ''
     volumes:
       - './log:/app/log'
       - './config.json:/app/config.json'

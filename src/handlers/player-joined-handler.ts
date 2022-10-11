@@ -1,4 +1,5 @@
 import { config } from '../lib/config';
+import DiscordClient from '../lib/discord';
 import WebRcon from '../lib/webrcon';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 import playerService from '../services/player-service';
@@ -35,6 +36,8 @@ class PlayerJoinedHandler implements IMessageHandler<IPlayerJoinData> {
         return;
       }
     }
+
+    DiscordClient.getInstance()?.updatePlayerCount();
   }
 }
 

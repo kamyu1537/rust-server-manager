@@ -1,3 +1,4 @@
+import DiscordClient from '../lib/discord';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
 interface IData {
@@ -15,6 +16,7 @@ class PlayerDisconnectHandler implements IMessageHandler<IData> {
 
   handle(data: IData): void {
     console.log('player disconnect:', data);
+    DiscordClient.getInstance()?.updatePlayerCount();
   }
 }
 

@@ -15,8 +15,10 @@ import PlayerPvpHandler from './handlers/player-pvp-handler';
 import PlayerSpawnHandler from './handlers/player-spawn-handler';
 import ReportHandler from './handlers/report-handler';
 import SaveHandler from './handlers/save-handler';
+import DiscordClient from './lib/discord';
 
 const webrcon = new WebRcon(RCON_HOST, RCON_PASS);
+DiscordClient.getInstance(webrcon);
 
 // events
 webrcon.on('connected', executeAutoCommands);

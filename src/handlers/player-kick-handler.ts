@@ -1,3 +1,4 @@
+import DiscordClient from '../lib/discord';
 import { getParenthesisText } from '../lib/utils';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
@@ -25,6 +26,8 @@ class PlayerKickHandler implements IMessageHandler<IChatMessage> {
     const reason = result[result.length - 1].slice(1, -1);
 
     console.log('player kicked:', { displayName, reason });
+
+    DiscordClient.getInstance()?.updatePlayerCount();
   }
 }
 

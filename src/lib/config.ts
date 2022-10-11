@@ -2,6 +2,8 @@ import 'dotenv/config';
 import fs from 'fs';
 
 export const SERVER_KEY = process.env.SERVER_KEY || 'server_1';
+export const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
+
 export const RCON_HOST = process.env.RCON_HOST || '127.0.0.1:28016';
 export const RCON_PASS = process.env.RCON_PASS || 'password';
 
@@ -16,6 +18,9 @@ interface IConfigData {
   serverDescription: string;
 
   autoCommands: string[];
+
+  playerCountChannelId: string;
+  playerCountChannelNameFormat: string;
 }
 
 export let config: IConfigData = {
@@ -29,6 +34,8 @@ export let config: IConfigData = {
   serverDescription: '',
 
   autoCommands: [],
+  playerCountChannelId: '',
+  playerCountChannelNameFormat: 'Player: {0}',
 };
 
 if (fs.existsSync('./config.json')) {

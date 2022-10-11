@@ -1,3 +1,4 @@
+import DiscordClient from '../lib/discord';
 import WebRcon from '../lib/webrcon';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
@@ -8,6 +9,7 @@ class SaveHandler implements IMessageHandler {
   handle(_: unknown, webrcon: WebRcon): void {
     console.info('save detected, run backup command');
     webrcon.commandAsync('server.backup').then().catch(console.error);
+    DiscordClient.getInstance()?.updatePlayerCount();
   }
 }
 

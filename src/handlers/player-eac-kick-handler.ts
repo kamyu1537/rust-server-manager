@@ -1,3 +1,4 @@
+import DiscordClient from '../lib/discord';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
 interface IEacKickData {
@@ -13,6 +14,7 @@ class PlayerEacKickHandler implements IMessageHandler<IEacKickData> {
 
   handle(data: IEacKickData): void {
     console.log('player eac kicked:', data);
+    DiscordClient.getInstance()?.updatePlayerCount();
   }
 }
 

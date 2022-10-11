@@ -1,4 +1,5 @@
 import WebSocket from 'ws';
+import type { IServerInfo } from '../server.types';
 import MessageHandler from './message-handler';
 import type {
   EventHandler,
@@ -117,6 +118,11 @@ class WebRcon {
     setTimeout(() => {
       this.ws = this.createWebSocket(this.options);
     }, 10000);
+  }
+
+  public async getServerInfo() {
+    const json = await this.commandAsync('serverinfo');
+    return JSON.parse(json.Message) as IServerInfo;
   }
 
   private async onMessage(raw: Buffer) {

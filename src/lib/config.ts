@@ -37,7 +37,7 @@ export let config: IConfigData = {
   autoCommands: [],
 
   playerCountChannelId: '',
-  playerCountChannelNameFormat: 'Player: {0}',
+  playerCountChannelNameFormat: 'Player: {count}',
   gameEventChannelId: '',
 };
 

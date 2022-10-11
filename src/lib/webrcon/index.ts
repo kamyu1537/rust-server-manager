@@ -41,10 +41,7 @@ class WebRcon {
       handshakeTimeout: 30000,
     };
 
-    const ws = new WebSocket(
-      `ws://${this.host}/${this.pass}`,
-      Object.assign(defaultOptions, options)
-    );
+    const ws = new WebSocket(`ws://${this.host}/${this.pass}`, Object.assign(defaultOptions, options));
 
     ws.on('close', this.onClose.bind(this));
     ws.on('error', this.onError.bind(this));
@@ -110,10 +107,7 @@ class WebRcon {
   }
 
   private onClose(code: number, reason: Buffer) {
-    console.error(
-      'socket is closed. reconnect will be attempted in 10 seconds.',
-      { code, reason: reason.toString() }
-    );
+    console.error('socket is closed. reconnect will be attempted in 10 seconds.', { code, reason: reason.toString() });
 
     if (this.ws != null) {
       this.ws.removeAllListeners();

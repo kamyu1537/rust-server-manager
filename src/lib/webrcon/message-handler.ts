@@ -16,10 +16,7 @@ class MessageHandler {
     this.handlers.delete(handler);
   }
 
-  public async handle(
-    webrcon: WebRcon,
-    message: IRconMessage
-  ): Promise<boolean> {
+  public async handle(webrcon: WebRcon, message: IRconMessage): Promise<boolean> {
     let result = false;
 
     for await (const handler of this.handlers) {
@@ -40,9 +37,7 @@ class MessageHandler {
           }
         }
 
-        new Promise(() => handler.handle(data, webrcon, message))
-          .then()
-          .catch(console.error);
+        new Promise(() => handler.handle(data, webrcon, message)).then().catch(console.error);
 
         result = true;
       } else {

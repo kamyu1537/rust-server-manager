@@ -14,8 +14,7 @@ class PlayerKickHandler implements IMessageHandler<IChatMessage> {
   type: RconMessageType = 'Chat';
 
   handle(data: IChatMessage): void {
-    if (data.Channel !== 2 || data.UserId !== '0' || data.Username !== 'SERVER')
-      return;
+    if (data.Channel !== 2 || data.UserId !== '0' || data.Username !== 'SERVER') return;
 
     if (!/Kicking (.*)/g.test(data.Message)) return;
 

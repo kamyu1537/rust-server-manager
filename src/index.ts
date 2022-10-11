@@ -1,4 +1,5 @@
 import { RCON_HOST, RCON_PASS } from './lib/config';
+import { executeAutoCommands, removeEntities, setServerInfo } from './lib/server';
 import WebRcon from './lib/webrcon';
 
 import ChatHandler from './handlers/chat-handler';
@@ -12,14 +13,21 @@ import PlayerKickHandler from './handlers/player-kick-handler';
 import PlayerPveHandler from './handlers/player-pve-handler';
 import PlayerPvpHandler from './handlers/player-pvp-handler';
 import PlayerSpawnHandler from './handlers/player-spawn-handler';
+import ReportHandler from './handlers/report-handler';
 import SaveHandler from './handlers/save-handler';
 
 const webrcon = new WebRcon(RCON_HOST, RCON_PASS);
+
+// events
+webrcon.on('connected', executeAutoCommands);
+webrcon.on('connected', setServerInfo);
+webrcon.on('connected', removeEntities);
 
 // Register handlers
 webrcon.messageHandler.add(new SaveHandler());
 webrcon.messageHandler.add(new GameEventHandler());
 webrcon.messageHandler.add(new ChatHandler());
+webrcon.messageHandler.add(new ReportHandler());
 webrcon.messageHandler.add(new NewPlayerJoinedHandler());
 webrcon.messageHandler.add(new PlayerJoinedHandler());
 webrcon.messageHandler.add(new PlayerDisconnectHandler());

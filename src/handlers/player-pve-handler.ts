@@ -20,5 +20,3 @@ class KillPveHandler implements IMessageHandler<IData> {
 }
 
 export default KillPveHandler;
-
-// entity.find_entity door.hinged.security.red

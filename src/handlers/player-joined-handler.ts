@@ -18,13 +18,9 @@ class PlayerJoinedHandler implements IMessageHandler<IPlayerJoinData> {
 
   async handle(data: IPlayerJoinData, webrcon: WebRcon): Promise<void> {
     const ipAddressWithoutPort = data.ipAddress.split(':')[0];
-    const { isocode, proxy } = await playerService.getIpAddressData(
-      ipAddressWithoutPort
-    );
+    const { isocode, proxy } = await playerService.getIpAddressData(ipAddressWithoutPort);
 
-    console.info(
-      `${data.displayName}[${data.steamId}] joined on server (${data.ipAddress}/${isocode}/${data.os})`
-    );
+    console.info(`${data.displayName}[${data.steamId}] joined on server (${data.ipAddress}/${isocode}/${data.os})`);
 
     if (config.allowProxy && !proxy) {
       console.info('proxy detected, kicking player');

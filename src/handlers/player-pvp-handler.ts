@@ -4,8 +4,7 @@ import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
 class KillPvpHandler implements IMessageHandler {
   type: RconMessageType = 'Generic';
-  pattern =
-    /(.*)\[(7656[0-9]{13})\] was killed by (.*)\[(7656[0-9]{13})\] at (\([0-9.\- ]+\))/g;
+  pattern = /(.*)\[(7656[0-9]{13})\] was killed by (.*)\[(7656[0-9]{13})\] at (\([0-9.\- ]+\))/g;
   dataKeys = ['victimName', 'victimId', 'killerName', 'killerId', 'position'];
 
   handle(data: unknown): void {

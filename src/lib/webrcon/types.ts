@@ -2,7 +2,18 @@ import type { ClientRequestArgs } from 'http';
 import type { ClientOptions } from 'ws';
 import WebRcon from '.';
 
-export type RconMessageType = 'Generic' | 'Log' | 'Error' | 'Warning' | 'Chat';
+export type RconMessageType = 'Generic' | 'Error' | 'Warning' | 'Chat' | 'Report';
+
+export enum EReportType {
+  General,
+  Bug,
+  Cheat,
+  Abuse,
+  Idea,
+  OffensiveContent,
+  FIRST = 0,
+  LAST = 5,
+}
 
 export interface IRconMessage {
   Type: RconMessageType;
@@ -11,10 +22,7 @@ export interface IRconMessage {
   Stacktrace: string | null;
 }
 
-export type RconCommandCallback = (
-  message: IRconMessage
-) => void | Promise<void>;
-
+export type RconCommandCallback = (message: IRconMessage) => void | Promise<void>;
 export type RconCallbacks = Record<number, RconCommandCallback>;
 
 export type WebsocketOptions = ClientOptions | ClientRequestArgs;
@@ -24,11 +32,7 @@ export interface IMessageHandler<T = unknown> {
   pattern?: RegExp | string;
   dataKeys?: string[];
 
-  handle(
-    data: T,
-    webrcon: WebRcon,
-    message: IRconMessage
-  ): void | Promise<void>;
+  handle(data: T, webrcon: WebRcon, message: IRconMessage): void | Promise<void>;
 }
 
 export interface IChatMessage {
@@ -38,6 +42,14 @@ export interface IChatMessage {
   Username: string;
   Color: string;
   Time: number;
+}
+
+export interface IReportMessage {
+  PlayerId: string;
+  PlayerName: string;
+  Subject: string;
+  Message: string;
+  Type: EReportType;
 }
 
 export type WebRconEvents = Record<string, [EventHandler[], EventHandler[]]>;

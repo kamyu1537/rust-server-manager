@@ -1,3 +1,7 @@
+import { DateTime } from 'luxon';
+import { IReplaceInfoTextOptions } from './server.types';
+import type WebRcon from './webrcon';
+
 export const getParenthesisText = (str: string) => {
   const result: string[] = [];
   const queue: number[] = [];
@@ -23,4 +27,19 @@ export const getParenthesisText = (str: string) => {
   }
 
   return result;
+};
+
+export const getServerVariable = async (command: string, webrcon: WebRcon) => {
+  return (await webrcon.commandAsync(command)).Message.split(`${command}: `)[1].replace(/"/g, '');
+};
+
+export const replaceInfoText = (str: string, data: IReplaceInfoTextOptions) => {
+  const dateTime = DateTime.fromJSDate(new Date(data.info.SaveCreatedTime));
+  return str
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n')
+    .replace(/{world_size}/g, data.worldSize)
+    .replace(/{max_team_size}/g, data.maxTeamSize)
+    .replace(/{last_reset}/g, dateTime.toFormat('yyyy-MM-dd HH:mm:ss'))
+    .replace(/{last_reset_only_md}/g, dateTime.toFormat('yyyy-MM-dd'));
 };

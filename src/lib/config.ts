@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import fs from 'fs';
 
+export const SERVER_KEY = process.env.SERVER_KEY || 'server_1';
 export const RCON_HOST = process.env.RCON_HOST || '127.0.0.1:28016';
 export const RCON_PASS = process.env.RCON_PASS || 'password';
 
@@ -10,9 +11,11 @@ interface IConfigData {
   allowProxy: boolean;
 
   serverName: string;
-  serverHomepage: string;
+  serverUrl: string;
   serverHeaderImage: string;
   serverDescription: string;
+
+  autoCommands: string[];
 }
 
 export let config: IConfigData = {
@@ -21,9 +24,11 @@ export let config: IConfigData = {
   allowProxy: true,
 
   serverName: 'My Server',
-  serverHomepage: 'https://myserver.com',
+  serverUrl: 'https://myserver.com',
   serverHeaderImage: 'https://myserver.com/header.png',
-  serverDescription: 'My Server Description',
+  serverDescription: '',
+
+  autoCommands: [],
 };
 
 if (fs.existsSync('./config.json')) {
@@ -32,3 +37,7 @@ if (fs.existsSync('./config.json')) {
 }
 
 fs.writeFileSync('./config.json', JSON.stringify(config, null, 2));
+
+if (fs.existsSync('./description.txt')) {
+  config.serverDescription = fs.readFileSync('./description.txt', 'utf8');
+}

@@ -1,10 +1,12 @@
-import ky from 'ky';
+import got from 'got';
 import type { IGetIpAddressDataResult, IPlayerService, ProxyCheckResponse } from './player-service.types';
 
 class PlayerService implements IPlayerService {
   async getIpAddressData(ipAddress: string): Promise<IGetIpAddressDataResult> {
     try {
-      const res = (await ky.get('https://proxycheck.io/v2/' + ipAddress + '?vpn=1&asn=1').json()) as ProxyCheckResponse;
+      const res = (await got
+        .get('https://proxycheck.io/v2/' + ipAddress + '?vpn=1&asn=1')
+        .json()) as ProxyCheckResponse;
 
       return {
         isocode: res[ipAddress].isocode,

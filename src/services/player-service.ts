@@ -8,6 +8,10 @@ class PlayerService implements IPlayerService {
         .get('https://proxycheck.io/v2/' + ipAddress + '?vpn=1&asn=1')
         .json()) as ProxyCheckResponse;
 
+      if (res.status === 'error') {
+        return { isocode: 'unknown', proxy: false };
+      }
+
       return {
         isocode: res[ipAddress].isocode,
         proxy: res[ipAddress].proxy === 'yes',

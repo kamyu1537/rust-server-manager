@@ -13,8 +13,8 @@ class SpawnRedKeyCard implements IMessageHandler {
 
   async handle(data: IGameEventData, webrcon: WebRcon): Promise<void> {
     if (!config.spawnRedKeycard) return;
-
     if (data.prefab !== 'assets/prefabs/npc/cargo_plane/cargo_plane.prefab') return;
+
     const redKeyResp = await webrcon.commandAsync('entity.find_entity keycard_red_pickup.entity');
     const [, ...redKeys] = redKeyResp.Message.split('\n').filter(Boolean);
     if (redKeys.length > 0) {
@@ -25,7 +25,10 @@ class SpawnRedKeyCard implements IMessageHandler {
     const blueKeyResp = await webrcon.commandAsync('entity.find_entity keycard_blue_pickup.entity');
     const [, ...blueKeys] = blueKeyResp.Message.split('\n').filter(Boolean);
 
-    if (blueKeys.length < 1) return;
+    if (blueKeys.length < 1) {
+      console.info('no blue keycard found');
+      return;
+    }
 
     const entityPositions = blueKeys.map((line) =>
       /sv\s+\d+\s+\d+\s+\d+\s+(?:.*)\s+(\([0-9.,\- ]+\))\s+(?:\([0-9.,\- ]+\))\s+(?:\([0-9.,\- ]+\))\s+(?:\([0-9.,\- ]+\))\s+(?:.*)/g

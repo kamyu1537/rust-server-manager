@@ -11,7 +11,7 @@ interface IChatMessage {
   Time: number;
 }
 
-class PlayerKickHandler implements IMessageHandler<IChatMessage> {
+class PlayerCmdKickHandler implements IMessageHandler<IChatMessage> {
   type: RconMessageType = 'Chat';
 
   handle(data: IChatMessage): void {
@@ -31,4 +31,4 @@ class PlayerKickHandler implements IMessageHandler<IChatMessage> {
   }
 }
 
-export default PlayerKickHandler;
+export default PlayerCmdKickHandler;

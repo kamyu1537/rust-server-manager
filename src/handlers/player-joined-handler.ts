@@ -25,14 +25,14 @@ class PlayerJoinedHandler implements IMessageHandler<IPlayerJoinData> {
 
     if (config.allowProxy && !proxy) {
       console.info('proxy detected, kicking player');
-      webrcon.commandAsync('kick ' + data.steamId + ' Proxy detected');
+      webrcon.commandAsync('kick ' + data.steamId + ' "Proxy detected"');
       return;
     }
 
     if (config.allowedCountries.length > 0 && isocode !== 'unknown') {
       if (!config.allowedCountries.includes(isocode)) {
         console.info('country not allowed, kicking player');
-        webrcon.commandAsync('kick ' + data.steamId + ' Country not allowed');
+        webrcon.commandAsync('kick ' + data.steamId + ' "Country not allowed"');
         return;
       }
     }

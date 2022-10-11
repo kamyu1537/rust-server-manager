@@ -8,7 +8,6 @@ export const RCON_HOST = process.env.RCON_HOST || '127.0.0.1:28016';
 export const RCON_PASS = process.env.RCON_PASS || 'password';
 
 interface IConfigData {
-  killEntities: string[];
   allowedCountries: string[];
   allowProxy: boolean;
 
@@ -24,6 +23,8 @@ interface IConfigData {
   gameEventChannelId: string;
 
   necessaryMonuments: string[];
+  killEntities: string[];
+  spawnRedKeycard: boolean;
 }
 
 export let config: IConfigData = {
@@ -42,6 +43,7 @@ export let config: IConfigData = {
   playerCountChannelNameFormat: 'Player: {count}',
   gameEventChannelId: '',
 
+  spawnRedKeycard: false,
   necessaryMonuments: [
     'assets/bundled/prefabs/autospawn/monuments/medium/compound.prefab',
     'assets/bundled/prefabs/autospawn/monument/medium/bandit_town.prefab',

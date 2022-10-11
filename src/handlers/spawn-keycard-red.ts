@@ -12,8 +12,15 @@ class SpawnRedKeyCard implements IMessageHandler {
   dataKeys = ['prefab'];
 
   async handle(data: IGameEventData, webrcon: WebRcon): Promise<void> {
-    if (!config.spawnRedKeycard) return;
-    if (data.prefab !== 'assets/prefabs/npc/cargo_plane/cargo_plane.prefab') return;
+    if (!config.spawnRedKeycard) {
+      console.info('redKeySpawn: red keycard spawn disabled');
+      return;
+    }
+
+    if (data.prefab !== 'assets/prefabs/npc/cargo plane/cargo_plane.prefab') {
+      console.info('redKeySpawn: not a cargo plane, skipping');
+      return;
+    }
 
     const redKeyResp = await webrcon.commandAsync('entity.find_entity keycard_red_pickup.entity');
     const [, ...redKeys] = redKeyResp.Message.split('\n').filter(Boolean);

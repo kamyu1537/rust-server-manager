@@ -125,7 +125,7 @@ class WebRcon {
     }, 10000);
   }
 
-  private onMessage(raw: Buffer) {
+  private async onMessage(raw: Buffer) {
     const data = JSON.parse(raw.toString('utf8')) as IRconMessage;
 
     if (data.Identifier > 1000) {
@@ -135,7 +135,7 @@ class WebRcon {
         delete this.callbacks[data.Identifier];
       }
     } else {
-      if (!this.messageHandler.handle(this, data)) {
+      if (!(await this.messageHandler.handle(this, data))) {
         if (data.Type === 'Generic') {
           if (process.env.NODE_ENV !== 'production') {
             console.info('debug |', data.Message);

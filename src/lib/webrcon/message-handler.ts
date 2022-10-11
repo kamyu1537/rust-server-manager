@@ -16,20 +16,23 @@ class MessageHandler {
     this.handlers.delete(handler);
   }
 
-  public handle(webrcon: WebRcon, message: IRconMessage): boolean {
+  public async handle(
+    webrcon: WebRcon,
+    message: IRconMessage
+  ): Promise<boolean> {
     let result = false;
 
-    this.handlers.forEach((handler) => {
-      if (handler.type !== message.Type) return;
+    for await (const handler of this.handlers) {
+      if (handler.type !== message.Type) continue;
       let data: Record<string, unknown> = {};
 
       if (handler.pattern) {
         if (typeof handler.pattern === 'string') {
           const index = message.Message.indexOf(handler.pattern);
-          if (index === -1) return;
+          if (index === -1) continue;
         } else {
           const match = handler.pattern.exec(message.Message) || [];
-          if (match.length < 1) return;
+          if (match.length < 1) continue;
 
           const dataKeys = handler.dataKeys || [];
           for (let i = 0; i < dataKeys.length; i++) {
@@ -37,7 +40,10 @@ class MessageHandler {
           }
         }
 
-        handler.handle(data, webrcon, message);
+        new Promise(() => handler.handle(data, webrcon, message))
+          .then()
+          .catch(console.error);
+
         result = true;
       } else {
         if (message.Type === 'Chat') {
@@ -47,7 +53,7 @@ class MessageHandler {
         handler.handle(data, webrcon, message);
         result = true;
       }
-    });
+    }
 
     return result;
   }

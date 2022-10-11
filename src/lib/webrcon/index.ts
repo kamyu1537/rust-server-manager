@@ -1,4 +1,5 @@
 import WebSocket from 'ws';
+import { appendLog } from '../log';
 import type { IServerInfo } from '../server.types';
 import MessageHandler from './message-handler';
 import type {
@@ -135,6 +136,10 @@ class WebRcon {
         delete this.callbacks[data.Identifier];
       }
     } else {
+      if (data.Type === 'Generic') {
+        appendLog(data.Message);
+      }
+
       if (!(await this.messageHandler.handle(this, data))) {
         if (data.Type === 'Generic') {
           if (process.env.NODE_ENV !== 'production') {

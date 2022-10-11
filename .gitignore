@@ -3,6 +3,7 @@ dist/
 
 .vscode/
 .idea/
+log/
 
 .env*
 config.json

@@ -42,7 +42,7 @@ class DiscordClient {
 
     const channel = await this.client.channels.fetch(config.gameEventChannelId);
     if (channel && channel.isTextBased()) {
-      channel.send(`[${SERVER_KEY} GAME EVENT] ${prefab}`);
+      channel.send(`[**${SERVER_KEY.toUpperCase()}** GAME EVENT] ${prefab}`);
     }
   }
 }

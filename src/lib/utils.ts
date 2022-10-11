@@ -36,10 +36,10 @@ export const getServerVariable = async (command: string, webrcon: WebRcon) => {
 export const replaceInfoText = (str: string, data: IReplaceInfoTextOptions) => {
   const dateTime = DateTime.fromJSDate(new Date(data.info.SaveCreatedTime));
   return str
-    .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n')
     .replace(/{world_size}/g, data.worldSize)
     .replace(/{max_team_size}/g, data.maxTeamSize)
     .replace(/{last_reset}/g, dateTime.toFormat('yyyy-MM-dd HH:mm:ss'))
-    .replace(/{last_reset_only_md}/g, dateTime.toFormat('yyyy-MM-dd'));
+    .replace(/{last_reset_only_md}/g, dateTime.toFormat('yyyy-MM-dd'))
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n');
 };

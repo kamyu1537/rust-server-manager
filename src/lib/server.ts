@@ -20,10 +20,10 @@ export const setServerInfo = async (webrcon: WebRcon) => {
 
   const hostname = replaceInfoText(config.serverName, data);
   const description = replaceInfoText(config.serverDescription, data);
-  await webrcon.commandAsync('server.hostname ' + hostname);
-  await webrcon.commandAsync('server.description ' + description);
-  await webrcon.commandAsync('server.url ' + config.serverUrl);
-  await webrcon.commandAsync('server.headerimage ' + config.serverHeaderImage);
+  await webrcon.commandAsync('server.hostname "' + hostname + '"');
+  await webrcon.commandAsync('server.description "' + description + '"');
+  await webrcon.commandAsync('server.url "' + config.serverUrl + '"');
+  await webrcon.commandAsync('server.headerimage "' + config.serverHeaderImage + '"');
 };
 
 export const removeEntities = async (webrcon: WebRcon) => {

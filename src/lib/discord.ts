@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits } from 'discord.js';
-import { config, DISCORD_BOT_TOKEN } from './config';
+import { config, DISCORD_BOT_TOKEN, SERVER_KEY } from './config';
 import WebRcon from './webrcon';
 
 class DiscordClient {
@@ -33,6 +33,16 @@ class DiscordClient {
     if (channel && channel.isVoiceBased()) {
       const serverInfo = await this.webrcon.getServerInfo();
       channel.setName(config.playerCountChannelNameFormat.replace('{count}', serverInfo.Players.toString()));
+    }
+  }
+
+  async sendGameEventMessage(prefab: string) {
+    if (!this.client.isReady()) return;
+    if (!config.gameEventChannelId) return;
+
+    const channel = await this.client.channels.fetch(config.gameEventChannelId);
+    if (channel && channel.isTextBased()) {
+      channel.send(`[${SERVER_KEY} GAME EVENT] ${prefab}`);
     }
   }
 }

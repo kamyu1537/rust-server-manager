@@ -21,6 +21,7 @@ interface IConfigData {
 
   playerCountChannelId: string;
   playerCountChannelNameFormat: string;
+  gameEventChannelId: string;
 }
 
 export let config: IConfigData = {
@@ -34,8 +35,10 @@ export let config: IConfigData = {
   serverDescription: '',
 
   autoCommands: [],
+
   playerCountChannelId: '',
   playerCountChannelNameFormat: 'Player: {0}',
+  gameEventChannelId: '',
 };
 
 if (fs.existsSync('./config.json')) {

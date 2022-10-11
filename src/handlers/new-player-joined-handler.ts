@@ -20,7 +20,7 @@ class NewPlayerJoinedHandler implements IMessageHandler<IPlayerJoinData> {
 
     console.info(`${data.displayName}[${data.steamId}] joined on server (${data.ipAddress}/${isocode})`);
 
-    if (config.allowProxy && !proxy) {
+    if (!config.allowProxy && proxy) {
       console.info('proxy detected, kicking player');
       webrcon.commandAsync('kick ' + data.steamId + ' "Proxy detected"');
       return;

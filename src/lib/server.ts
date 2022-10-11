@@ -83,5 +83,7 @@ export const checkServerMonuments = async (webrcon: WebRcon) => {
       console.info('server restart request');
       await webrcon.commandAsync('restart 0');
     }
+  } else {
+    console.info('monument found:', config.necessaryMonuments[found]);
   }
 };

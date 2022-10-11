@@ -11,8 +11,6 @@ export enum EReportType {
   Abuse,
   Idea,
   OffensiveContent,
-  FIRST = 0,
-  LAST = 5,
 }
 
 export interface IRconMessage {

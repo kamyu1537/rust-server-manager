@@ -25,6 +25,7 @@ interface IConfigData {
   necessaryMonuments: string[];
   killEntities: string[];
   spawnRedKeycard: boolean;
+  refillPopulations: boolean;
 }
 
 export let config: IConfigData = {
@@ -44,6 +45,7 @@ export let config: IConfigData = {
   gameEventChannelId: '',
 
   spawnRedKeycard: false,
+  refillPopulations: false,
   necessaryMonuments: [
     'assets/bundled/prefabs/autospawn/monuments/medium/compound.prefab',
     'assets/bundled/prefabs/autospawn/monument/medium/bandit_town.prefab',

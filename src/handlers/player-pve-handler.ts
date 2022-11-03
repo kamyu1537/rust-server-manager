@@ -13,7 +13,7 @@ class KillPveHandler implements IMessageHandler<IData> {
   dataKeys = ['displayName', 'steamId', 'killer', 'position'];
 
   handle(data: IData): void {
-    if (/\d+\[(7656[0-9]{13})\]/g.test(data.killer)) return; // 이건 PVP 로그
+    if (/(.*)\[(7656[0-9]{13})\]/g.test(data.killer)) return; // 이건 PVP 로그
 
     console.info('kill pve: ', data);
   }

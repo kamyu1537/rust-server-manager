@@ -137,7 +137,7 @@ class WebRcon {
       }
     } else {
       if (data.Type === 'Generic') {
-        appendLog(data.Message);
+        appendLog(data.Message, 'console');
       }
 
       if (!(await this.messageHandler.handle(this, data))) {

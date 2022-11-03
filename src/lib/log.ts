@@ -9,13 +9,13 @@ export function appendLog(log: string, name = 'log') {
   }
 
   const fileName = name + suffix;
-  const appendLine = '[' + date + '] (' + name === 'log' ? 'generic' : name + ') ' + log;
+  const appendLine = `[${date}] (${name}) ${log}`;
   console.info(appendLine);
 
   fs.appendFileSync('./log/' + fileName, appendLine + '\n', {});
 
   // 모든 로그가 log- 파일에 모입니다.
-  if (name !== 'log') {
+  if (name !== 'log' && name !== 'console') {
     fs.appendFileSync('./log/log' + suffix, appendLine + '\n', {});
   }
 }

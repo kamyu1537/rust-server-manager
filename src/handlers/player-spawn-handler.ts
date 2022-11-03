@@ -1,3 +1,4 @@
+import { appendLog } from '../lib/log';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
 interface IData {
@@ -11,7 +12,8 @@ class PlayerSpawnHandler implements IMessageHandler<IData> {
   dataKeys = ['displayName', 'steamId'];
 
   handle(data: IData): void {
-    console.log('player spawned:', data);
+    const log = `${data.displayName} has spawned`;
+    appendLog(log, 'player-spawned');
   }
 }
 

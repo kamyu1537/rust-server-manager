@@ -1,12 +1,12 @@
 import DiscordClient from '../lib/discord';
+import { appendLog } from '../lib/log';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
 interface IData {
-  displayName: string;
   steamId: string;
   ipAddress: string;
-  os: string;
-  ownerId: string;
+  displayName: string;
+  reason: string;
 }
 
 class PlayerDisconnectHandler implements IMessageHandler<IData> {
@@ -15,7 +15,9 @@ class PlayerDisconnectHandler implements IMessageHandler<IData> {
   dataKeys = ['ipAddress', 'steamId', 'displayName', 'reason'];
 
   handle(data: IData): void {
-    console.log('player disconnect:', data);
+    const log = `${data.displayName}[${data.steamId}] disconnected ${data.reason}`;
+    appendLog(log, 'player-disconnected');
+
     DiscordClient.getInstance()?.updatePlayerCount();
   }
 }

@@ -10,7 +10,7 @@ import PlayerDiedHandler from './handlers/player-died-handler';
 import PlayerDisconnectHandler from './handlers/player-disconnect-handler';
 import PlayerEacKickHandler from './handlers/player-eac-kick-handler';
 import PlayerJoinedHandler from './handlers/player-joined-handler';
-import PlayerKickHandler from './handlers/player-kick-handler copy';
+import PlayerKickHandler from './handlers/player-kick-handler';
 import PlayerPveHandler from './handlers/player-pve-handler';
 import PlayerPvpHandler from './handlers/player-pvp-handler';
 import PlayerSpawnHandler from './handlers/player-spawn-handler';

@@ -10,6 +10,7 @@ export const RCON_PASS = process.env.RCON_PASS || 'password';
 interface IConfigData {
   allowedCountries: string[];
   allowProxy: boolean;
+  disallowProviders: string[];
 
   serverName: string;
   serverUrl: string;
@@ -32,6 +33,7 @@ export let config: IConfigData = {
   killEntities: [],
   allowedCountries: [],
   allowProxy: true,
+  disallowProviders: [],
 
   serverName: 'My Server',
   serverUrl: 'https://myserver.com',

@@ -43,3 +43,24 @@ export const replaceInfoText = (str: string, data: IReplaceInfoTextOptions) => {
     .replace(/"/g, '\\"')
     .replace(/\n/g, '\\n');
 };
+
+interface Position {
+  x: number;
+  y: number;
+  z: number;
+}
+
+export const getEntityPosition = (str: string): Position => {
+  const [x, y, z] = str
+    .replace('(', '')
+    .replace(')', '')
+    .split(',')
+    .map((v) => parseFloat(v.trim()));
+  return { x, y, z };
+};
+
+export const getDistance = (a: string, b: string): number => {
+  const aPos = getEntityPosition(a);
+  const bPos = getEntityPosition(b);
+  return Math.sqrt(Math.pow(aPos.x - bPos.x, 2) + Math.pow(aPos.y - bPos.y, 2) + Math.pow(aPos.z - bPos.z, 2));
+};

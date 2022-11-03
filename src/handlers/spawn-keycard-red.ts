@@ -1,4 +1,5 @@
 import { config } from '../lib/config';
+import { appendLog } from '../lib/log';
 import WebRcon from '../lib/webrcon';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
@@ -15,14 +16,14 @@ class SpawnRedKeyCard implements IMessageHandler {
     if (!config.spawnRedKeycard) return;
 
     if (data.prefab !== 'assets/prefabs/npc/cargo plane/cargo_plane.prefab') {
-      console.info('redKeySpawn: not a cargo plane, skipping');
+      console.info('RED_KEY_CARD: not a cargo plane, skipping');
       return;
     }
 
     const redKeyResp = await webrcon.commandAsync('entity.find_entity keycard_red_pickup.entity');
     const [, ...redKeys] = redKeyResp.Message.split('\n').filter(Boolean);
     if (redKeys.length > 0) {
-      console.info('red keycard already spawned');
+      console.info('RED_KEY_CARD: red keycard already spawned');
       return;
     }
 
@@ -30,7 +31,7 @@ class SpawnRedKeyCard implements IMessageHandler {
     const [, ...blueKeys] = blueKeyResp.Message.split('\n').filter(Boolean);
 
     if (blueKeys.length < 1) {
-      console.info('no blue keycard found');
+      console.info('RED_KEY_CARD: no blue keycard found');
       return;
     }
 
@@ -44,7 +45,9 @@ class SpawnRedKeyCard implements IMessageHandler {
     const randomPosition = entityPositions[random];
 
     await webrcon.commandAsync(`entity.spawn keycard_red_pickup.entity ${randomPosition}`);
-    console.info(`red keycard spawned: ${randomPosition}`);
+
+    const log = `spawned red keycard at ${randomPosition}`;
+    appendLog(log, 'red-keycard-spawned');
   }
 }
 

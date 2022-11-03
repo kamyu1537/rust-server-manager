@@ -1,4 +1,5 @@
 import got from 'got';
+import { config } from '../lib/config';
 import type { IGetIpAddressDataResult, IPlayerService, ProxyCheckResponse } from './player-service.types';
 
 class PlayerService implements IPlayerService {
@@ -9,17 +10,36 @@ class PlayerService implements IPlayerService {
         .json()) as ProxyCheckResponse;
 
       if (res.status === 'error') {
-        return { isocode: 'unknown', proxy: false };
+        return { provider: 'unknown', isocode: 'unknown', proxy: false };
       }
 
       return {
+        provider: res[ipAddress].provider,
         isocode: res[ipAddress].isocode,
         proxy: res[ipAddress].proxy === 'yes',
       };
     } catch (err) {
       console.error(err);
-      return { isocode: 'unknown', proxy: false };
+      return { provider: 'unknown', isocode: 'unknown', proxy: false };
     }
+  }
+
+  async checkPlayerIpAddress({ proxy, provider, isocode }: IGetIpAddressDataResult): Promise<string> {
+    if (!config.allowProxy && proxy) {
+      return 'Proxy detected';
+    }
+
+    if (config.disallowProviders.length > 0 && config.disallowProviders.includes(provider)) {
+      return 'Disallowed provider';
+    }
+
+    if (config.allowedCountries.length > 0 && isocode !== 'unknown') {
+      if (!config.allowedCountries.includes(isocode)) {
+        return 'Country not allowed';
+      }
+    }
+
+    return '';
   }
 }
 

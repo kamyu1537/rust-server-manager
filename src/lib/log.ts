@@ -1,10 +1,21 @@
 import fs from 'fs';
 
-export function appendLog(log: string) {
-  const fileName = 'log-' + new Date().toISOString().slice(0, 10) + '.log';
+export function appendLog(log: string, name = 'log') {
+  const date = new Date().toISOString();
+  const suffix = '-' + date.slice(0, 10) + '.log';
+
   if (!fs.existsSync('./log')) {
     fs.mkdirSync('./log');
   }
 
-  fs.appendFileSync('./log/' + fileName, log + '\n', {});
+  const fileName = name + suffix;
+  const appendLine = '[' + date + '] (' + name === 'log' ? 'generic' : name + ') ' + log;
+  console.info(appendLine);
+
+  fs.appendFileSync('./log/' + fileName, appendLine + '\n', {});
+
+  // 모든 로그가 log- 파일에 모입니다.
+  if (name !== 'log') {
+    fs.appendFileSync('./log/log' + suffix, appendLine + '\n', {});
+  }
 }

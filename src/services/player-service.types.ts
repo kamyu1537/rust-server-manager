@@ -1,4 +1,5 @@
 export interface IGetIpAddressDataResult {
+  provider: string;
   isocode: string;
   proxy: boolean;
 }

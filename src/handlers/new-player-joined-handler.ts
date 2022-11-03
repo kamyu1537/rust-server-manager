@@ -1,4 +1,4 @@
-import { config } from '../lib/config';
+import { appendLog } from '../lib/log';
 import WebRcon from '../lib/webrcon';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 import playerService from '../services/player-service';
@@ -16,22 +16,18 @@ class NewPlayerJoinedHandler implements IMessageHandler<IPlayerJoinData> {
 
   async handle(data: IPlayerJoinData, webrcon: WebRcon): Promise<void> {
     const ipAddressWithoutPort = data.ipAddress.split(':')[0];
-    const { isocode, proxy } = await playerService.getIpAddressData(ipAddressWithoutPort);
+    const ipAddressData = await playerService.getIpAddressData(ipAddressWithoutPort);
+    const { isocode, provider } = ipAddressData;
 
-    console.info(`${data.displayName}[${data.steamId}] joined on server (${data.ipAddress}/${isocode})`);
+    const log = `${data.displayName}[${data.steamId}] joined on server (${data.ipAddress}/${isocode}/${provider}/new_player)`;
+    appendLog(log, 'player-joined');
+    appendLog(log, 'new-player-joined');
 
-    if (!config.allowProxy && proxy) {
-      console.info('proxy detected, kicking player');
-      webrcon.commandAsync('kick ' + data.steamId + ' "Proxy detected"');
-      return;
-    }
-
-    if (config.allowedCountries.length > 0 && isocode !== 'unknown') {
-      if (!config.allowedCountries.includes(isocode)) {
-        console.info('country not allowed, kicking player');
-        webrcon.commandAsync('kick ' + data.steamId + ' "Country not allowed"');
-        return;
-      }
+    const kickReason = await playerService.checkPlayerIpAddress(ipAddressData);
+    if (!!kickReason) {
+      const kickLog = `${data.displayName}[${data.steamId}] kicked for ${kickReason}`;
+      appendLog(kickLog, 'player-kicked');
+      webrcon.commandAsync('kick ' + data.steamId + ' "' + kickReason + '"');
     }
   }
 }

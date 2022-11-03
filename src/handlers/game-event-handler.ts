@@ -1,4 +1,5 @@
 import DiscordClient from '../lib/discord';
+import { appendLog } from '../lib/log';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
 interface IGameEventData {
@@ -11,7 +12,8 @@ class GameEventHandler implements IMessageHandler {
   dataKeys = ['prefab'];
 
   handle(data: IGameEventData): void {
-    console.log('game event:', data.prefab);
+    const log = `Game event started: ${data.prefab}`;
+    appendLog(log, 'game-event');
     DiscordClient.getInstance()?.sendGameEventMessage(data.prefab);
   }
 }

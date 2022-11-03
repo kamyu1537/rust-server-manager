@@ -1,14 +1,15 @@
+import { appendLog } from '../lib/log';
 import { EReportType, IMessageHandler, IReportMessage, RconMessageType } from '../lib/webrcon/types';
 
 class ReportHandler implements IMessageHandler<IReportMessage> {
   type: RconMessageType = 'Report';
 
   handle(data: IReportMessage): void {
-    console.log(
-      `report ${EReportType[data.Type]}(${data.Type}): ${data.PlayerName}[${data.PlayerId}]\n${data.Subject}:\n${
-        data.Message
-      }`
-    );
+    const log = `${data.Type}[${EReportType[data.Type]}] ${data.PlayerName}[${data.PlayerId}]/${data.Subject}: ${
+      data.Message
+    }`;
+
+    appendLog(log, 'report');
   }
 }
 

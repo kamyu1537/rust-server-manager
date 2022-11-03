@@ -1,4 +1,5 @@
 import DiscordClient from '../lib/discord';
+import { appendLog } from '../lib/log';
 import { getParenthesisText } from '../lib/utils';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
@@ -25,7 +26,8 @@ class PlayerCmdKickHandler implements IMessageHandler<IChatMessage> {
     const displayName = result.slice(0, -1).join('');
     const reason = result[result.length - 1].slice(1, -1);
 
-    console.log('cmd player kicked:', { displayName, reason });
+    const log = `${displayName} was kicked by command ${reason}`;
+    appendLog(log, 'player-kicked');
 
     DiscordClient.getInstance()?.updatePlayerCount();
   }

@@ -1,4 +1,5 @@
 import DiscordClient from '../lib/discord';
+import { appendLog } from '../lib/log';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
 
 interface IEacKickData {
@@ -13,7 +14,9 @@ class PlayerEacKickHandler implements IMessageHandler<IEacKickData> {
   dataKeys = ['displayName', 'steamId', 'reason'];
 
   handle(data: IEacKickData): void {
-    console.log('player eac kicked:', data);
+    const log = `${data.displayName}[${data.steamId}] was kicked for EAC ${data.reason}`;
+    appendLog(log, 'player-kicked');
+
     DiscordClient.getInstance()?.updatePlayerCount();
   }
 }

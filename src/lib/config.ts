@@ -8,6 +8,7 @@ export const RCON_HOST = process.env.RCON_HOST || '127.0.0.1:28016';
 export const RCON_PASS = process.env.RCON_PASS || 'password';
 
 interface IConfigData {
+  whitelist: string[];
   allowedCountries: string[];
   allowProxy: boolean;
   disallowProviders: string[];
@@ -32,6 +33,7 @@ interface IConfigData {
 export let config: IConfigData = {
   killEntities: [],
   allowedCountries: [],
+  whitelist: [],
   allowProxy: true,
   disallowProviders: [],
 

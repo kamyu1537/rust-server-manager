@@ -1,3 +1,4 @@
+import { config } from '../lib/config';
 import { appendLog } from '../lib/log';
 import WebRcon from '../lib/webrcon';
 import type { IMessageHandler, RconMessageType } from '../lib/webrcon/types';
@@ -23,11 +24,13 @@ class NewPlayerJoinedHandler implements IMessageHandler<IPlayerJoinData> {
     appendLog(log, 'player-joined');
     appendLog(log, 'new-player-joined');
 
-    const kickReason = await playerService.checkPlayerIpAddress(ipAddressData);
-    if (!!kickReason) {
-      const kickLog = `${data.displayName}[${data.steamId}] kicked for ${kickReason}`;
-      appendLog(kickLog, 'player-kicked');
-      webrcon.commandAsync('kick ' + data.steamId + ' "' + kickReason + '"');
+    if (!config.whitelist.includes(data.steamId)) {
+      const kickReason = await playerService.checkPlayerIpAddress(ipAddressData);
+      if (!!kickReason) {
+        const kickLog = `${data.displayName}[${data.steamId}] kicked for ${kickReason}`;
+        appendLog(kickLog, 'player-kicked');
+        webrcon.commandAsync('kick ' + data.steamId + ' "' + kickReason + '"');
+      }
     }
   }
 }

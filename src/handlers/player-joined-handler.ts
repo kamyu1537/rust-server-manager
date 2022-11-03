@@ -1,3 +1,4 @@
+import { config } from '../lib/config';
 import DiscordClient from '../lib/discord';
 import { appendLog } from '../lib/log';
 import WebRcon from '../lib/webrcon';
@@ -25,11 +26,13 @@ class PlayerJoinedHandler implements IMessageHandler<IPlayerJoinData> {
     const log = `${data.displayName}[${data.steamId}] joined on server (${data.ipAddress}/${isocode}/${provider}/${data.os})`;
     appendLog(log, 'player-joined');
 
-    const kickReason = await playerService.checkPlayerIpAddress(ipAddressData);
-    if (!!kickReason) {
-      const kickLog = `${data.displayName}[${data.steamId}] kicked for ${kickReason}`;
-      appendLog(kickLog, 'player-kicked');
-      webrcon.commandAsync('kick ' + data.steamId + ' "' + kickReason + '"');
+    if (!config.whitelist.includes(data.steamId)) {
+      const kickReason = await playerService.checkPlayerIpAddress(ipAddressData);
+      if (!!kickReason) {
+        const kickLog = `${data.displayName}[${data.steamId}] kicked for ${kickReason}`;
+        appendLog(kickLog, 'player-kicked');
+        webrcon.commandAsync('kick ' + data.steamId + ' "' + kickReason + '"');
+      }
     }
 
     DiscordClient.getInstance()?.updatePlayerCount();

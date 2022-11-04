@@ -23,10 +23,17 @@ class KillPvpHandler implements IMessageHandler {
     const killerPosition = killerPositionResult.Message;
     const distance = getDistance(data.position, killerPosition);
 
-    const combatLogResult = await webrcon.commandAsync('server.combatlog ' + data.victimId);
     const log = `${data.victimName}[${data.victimId}]${data.position} was killed by ${data.killerName}[${data.killerId}]${killerPosition} (distance: ${distance})`;
     appendLog(log, 'kill-pvp');
-    appendLog(`combat log (${data.victimId}) \n` + combatLogResult.Message.split('\n').slice(1).join('\n'), 'combat');
+
+    setTimeout(async () => {
+      const combatLogResult = await webrcon.commandAsync('server.combatlog ' + data.victimId);
+      appendLog(
+        `combat log (${data.killerName}[${data.killerId}]) -> (${data.victimName}[${data.victimId}]) =======\n` +
+          combatLogResult.Message.split('\n').slice(1).join('\n'),
+        'combat'
+      );
+    }, 10000);
   }
 }
 

@@ -12,6 +12,7 @@ interface IConfigData {
   allowedCountries: string[];
   allowProxy: boolean;
   disallowProviders: string[];
+  proxyCheckKey: string;
 
   serverName: string;
   serverUrl: string;
@@ -36,6 +37,7 @@ export let config: IConfigData = {
   whitelist: [],
   allowProxy: true,
   disallowProviders: [],
+  proxyCheckKey: '',
 
   serverName: 'My Server',
   serverUrl: 'https://myserver.com',

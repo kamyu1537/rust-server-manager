@@ -7,7 +7,7 @@ class PlayerService implements IPlayerService {
   async getIpAddressData(ipAddress: string): Promise<IGetIpAddressDataResult> {
     try {
       const res = (await axios
-        .get('https://proxycheck.io/v2/' + ipAddress + '?vpn=1&asn=1')
+        .get('https://proxycheck.io/v2/' + ipAddress + '?key=' + config.proxyCheckKey + '&vpn=1&asn=1')
         .then((res) => res.data)) as ProxyCheckResponse;
 
       if (res.status === 'error') {
@@ -24,6 +24,7 @@ class PlayerService implements IPlayerService {
 
       if (axios.isAxiosError(err)) {
         if (err.response?.data.status === 'error') {
+          console.info(err.response.data);
           return { provider: 'unknown', isocode: 'unknown', proxy: false };
         }
 

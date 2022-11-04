@@ -28,9 +28,16 @@ class KillPvpHandler implements IMessageHandler {
 
     setTimeout(async () => {
       const combatLogResult = await webrcon.commandAsync('server.combatlog ' + data.victimId);
+      const combatLogOutgoingResult = await webrcon.commandAsync('server.combatlog_outgoing ' + data.killerId);
+
       appendLog(
         `combat log (${data.killerName}[${data.killerId}]) -> (${data.victimName}[${data.victimId}]) =======\n` +
           combatLogResult.Message.split('\n').slice(1).join('\n'),
+        'combat'
+      );
+      appendLog(
+        `combat log outgoing (${data.killerName}[${data.killerId}]) -> (${data.victimName}[${data.victimId}]) =======\n` +
+          combatLogOutgoingResult.Message.split('\n').slice(1).join('\n'),
         'combat'
       );
     }, 10000);

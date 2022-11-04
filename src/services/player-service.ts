@@ -14,7 +14,7 @@ class PlayerService implements IPlayerService {
       }
 
       return {
-        provider: res[ipAddress].provider,
+        provider: res[ipAddress].provider || 'unknown',
         isocode: res[ipAddress].isocode,
         proxy: res[ipAddress].proxy === 'yes',
       };

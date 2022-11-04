@@ -11,7 +11,7 @@ export interface IPlayerService {
 export type ProxyCheckResponse = {
   [key: string]: {
     asn: string;
-    provider: string;
+    provider?: string;
     organisation: string;
     continent: string;
     country: string;

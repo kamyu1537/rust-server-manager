@@ -20,7 +20,11 @@ class PlayerService implements IPlayerService {
       };
     } catch (err) {
       console.error(err);
-      return { provider: 'unknown', isocode: 'unknown', proxy: false };
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          resolve(await this.getIpAddressData(ipAddress));
+        }, 1000);
+      });
     }
   }
 

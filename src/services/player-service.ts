@@ -1,13 +1,14 @@
-import got from 'got';
+// import got, { HTTPError } from 'got';
+import axios from 'axios';
 import { config } from '../lib/config';
 import type { IGetIpAddressDataResult, IPlayerService, ProxyCheckResponse } from './player-service.types';
 
 class PlayerService implements IPlayerService {
   async getIpAddressData(ipAddress: string): Promise<IGetIpAddressDataResult> {
     try {
-      const res = (await got
+      const res = (await axios
         .get('https://proxycheck.io/v2/' + ipAddress + '?vpn=1&asn=1')
-        .json()) as ProxyCheckResponse;
+        .then((res) => res.data)) as ProxyCheckResponse;
 
       if (res.status === 'error') {
         return { provider: 'unknown', isocode: 'unknown', proxy: false };
@@ -20,11 +21,20 @@ class PlayerService implements IPlayerService {
       };
     } catch (err) {
       console.error(err);
-      return new Promise((resolve) => {
-        setTimeout(async () => {
-          resolve(await this.getIpAddressData(ipAddress));
-        }, 1000);
-      });
+
+      if (axios.isAxiosError(err)) {
+        if (err.response?.data.status === 'error') {
+          return { provider: 'unknown', isocode: 'unknown', proxy: false };
+        }
+
+        return new Promise((resolve) => {
+          setTimeout(async () => {
+            resolve(await this.getIpAddressData(ipAddress));
+          }, 1000);
+        });
+      }
+
+      return { provider: 'unknown', isocode: 'unknown', proxy: false };
     }
   }
 
